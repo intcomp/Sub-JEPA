@@ -1,0 +1,73 @@
+diff --git a/config/train/lewm.yaml b/config/train/lewm.yaml
+index 0cb29af..fa6028c 100644
+--- a/config/train/lewm.yaml
++++ b/config/train/lewm.yaml
+@@ -2,7 +2,7 @@ defaults:
+   - _self_
+   - data: pusht
+ 
+-output_model_name: lewm
++output_model_name: subjepa
+ subdir: ${hydra:job.id}
+ 
+ num_workers: 6
+@@ -62,3 +62,6 @@ loss:
+     kwargs:
+       knots: 17
+       num_proj: 1024
++      num_subspaces: 32
++      subspace_dim: null
++      init_mode: orthogonal_frozen
+diff --git a/train.py b/train.py
+index 044ebfc..ce0a731 100644
+--- a/train.py
++++ b/train.py
+@@ -11,7 +11,8 @@ from lightning.pytorch.loggers import WandbLogger
+ from omegaconf import OmegaConf, open_dict
+ 
+ from jepa import JEPA
+-from module import ARPredictor, Embedder, MLP, SIGReg
++from module import ARPredictor, Embedder, MLP
++from subjepa import MultiSubspaceSIGReg
+ from utils import get_column_normalizer, get_img_preprocessor, ModelObjectCallBack
+ 
+ 
+@@ -36,10 +37,17 @@ def lejepa_forward(self, batch, stage, cfg):
+     tgt_emb = emb[:, n_preds:] # label
+     pred_emb = self.model.predict(ctx_emb, ctx_act) # pred
+ 
+-    # LeWM loss
++    # LeWM + Sub-JEPA loss
++    theta = cfg.loss.sigreg.get("theta", 0.0)
++
+     output["pred_loss"] = (pred_emb - tgt_emb).pow(2).mean()
+-    output["sigreg_loss"]= self.sigreg(emb.transpose(0, 1))
+-    output["loss"] = output["pred_loss"] + lambd * output["sigreg_loss"]  
++    output["sigreg_loss"] = self.sigreg(emb)
++    output["ortho_loss"] = self.sigreg.orthogonality_loss()
++    output["loss"] = (
++        output["pred_loss"]
++        + lambd * output["sigreg_loss"]
++        + theta * output["ortho_loss"]
++    )
+ 
+     losses_dict = {f"{stage}/{k}": v.detach() for k, v in output.items() if "loss" in k}
+     self.log_dict(losses_dict, on_step=True, sync_dist=True)
+@@ -125,7 +133,7 @@ def run(cfg):
+ 
+     optimizers = {
+         'model_opt': {
+-            "modules": 'model',
++            "modules": 'model|sigreg',
+             "optimizer": dict(cfg.optimizer),
+             "scheduler": {"type": "LinearWarmupCosineAnnealingLR"},
+             "interval": "epoch",
+@@ -135,7 +143,7 @@ def run(cfg):
+     data_module = spt.data.DataModule(train=train, val=val)
+     world_model = spt.Module(
+         model = world_model,
+-        sigreg = SIGReg(**cfg.loss.sigreg.kwargs),
++        sigreg = MultiSubspaceSIGReg(**cfg.loss.sigreg.kwargs),
+         forward=partial(lejepa_forward, cfg=cfg),
+         optim=optimizers,
+     )
