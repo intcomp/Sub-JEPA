@@ -4,6 +4,7 @@ Official implementation of the paper: **Sub-JEPA: Subspace Gaussian Regularizati
 
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/intcomp/Sub-JEPA)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-red)]()
+[![Checkpoints](https://img.shields.io/badge/Checkpoints-HuggingFace-ffcc4d?logo=huggingface&logoColor=yellow)](https://huggingface.co/intcomp/sub-jepa)
 
 ---
 
@@ -60,6 +61,18 @@ Follow the upstream LeWM instructions:
 - Data layout: https://github.com/lucas-maes/le-wm#data
 
 In particular, LeWM (and this repo) expects datasets and checkpoints under `$STABLEWM_HOME` (defaults to `~/.stable-wm/`).
+
+## Pretrained Checkpoints
+
+We provide pretrained Sub-JEPA checkpoints on [Hugging Face](https://huggingface.co/intcomp/sub-jepa).
+
+You can download all released checkpoints with:
+
+```bash
+pip install -U huggingface_hub
+
+hf download intcomp/sub-jepa
+```
 
 ## Train
 
