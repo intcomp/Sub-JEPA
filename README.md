@@ -87,14 +87,15 @@ All Sub-JEPA knobs live under `loss.sigreg` in `le-wm/config/train/lewm.yaml`.
 | `loss.sigreg.kwargs.init_mode`     | Projection initialization mode.                                                        |
 | `loss.sigreg.theta`                | Soft orthogonality penalty weight. Only used by trainable projection variants.         |
 
-Example: train with a trainable projection and soft orthogonality penalty:
+Example: To train the model using the default configuration described in our paper, run:
 
 ```bash
-PYTHONPATH=. python le-wm/train.py \
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
   data=tworoom \
-  subdir=pusht/subjepa_soft \
-  loss.sigreg.kwargs.init_mode=random_trainable_soft \
-  loss.sigreg.theta=0.1
+  subdir=tworoom/subjepa \
+  loss.sigreg.kwargs.init_mode=orthogonal_frozen \
+  loss.sigreg.kwargs.num_subspaces=32 \
+  trainer.max_epochs=10
 ```
 
 ## Evaluation
@@ -106,6 +107,12 @@ python le-wm/eval.py --config-name=tworoom.yaml policy=tworoom/subjepa
 ```
 
 `policy` must be the checkpoint path **relative to `$STABLEWM_HOME`**, without the `_object.ckpt` suffix.
+
+Example: Full evaluation with our paper's default seeds:
+
+```bash
+python le-wm/eval.py --config-name=tworoom.yaml policy=tworoom/subjepa seed=42,100,2026,3407,1234,4444 --multirun
+```
 
 ## Acknowledgements
 
