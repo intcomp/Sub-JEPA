@@ -136,5 +136,13 @@ We thank the authors of LeWM for releasing their codebase.
 
 If you find our work useful in your research, please consider citing:
 ```bibtex
-% TODO: BibTeX
+@misc{zhao2026subjepa,
+  title        = {Sub-JEPA: Subspace Gaussian Regularization for Stable End-to-End World Models},
+  author       = {Zhao, Kai and Nie, Dongliang and Lin, Yuchen and Luo, Zhehan and Gu, Yixiao and Fan, Deng-Ping and Zeng, Dan},
+  year         = {2026},
+  eprint       = {2605.09241},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.LG},
+  url          = {https://arxiv.org/abs/2605.09241}
+}
 ```
