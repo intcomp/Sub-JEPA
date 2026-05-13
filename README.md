@@ -2,9 +2,11 @@
 
 Official implementation of the paper: **Sub-JEPA: Subspace Gaussian Regularization for Stable End-to-End World Models**.
 
+[![Project Page](https://img.shields.io/badge/Project-Page-blue?logo=googlechrome&logoColor=white)](https://kaizhao.net/sub-jepa)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/intcomp/Sub-JEPA)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/abs/2605.09241)
 [![Checkpoints](https://img.shields.io/badge/Checkpoints-HuggingFace-ffcc4d?logo=huggingface&logoColor=yellow)](https://huggingface.co/intcomp/sub-jepa)
+
 
 ---
 
