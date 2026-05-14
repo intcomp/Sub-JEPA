@@ -16,6 +16,18 @@ Joint-Embedding Predictive Architectures (JEPAs) offer an effective framework fo
 
 **Sub-JEPA** relaxes this global constraint by applying Gaussian regularization across multiple random subspaces instead of the original embedding space. 
 
+
+<div align="center">
+  <p>
+    <img src="https://kaizhao.net/images/projects/sub-jepa/two-room.gif" alt="Two-Room Labeled" width="49%" />
+    <img src="https://kaizhao.net/images/projects/sub-jepa/reacher.gif" alt="PushT Labeled" width="49%" />
+  </p>
+  <p>
+    <img src="https://kaizhao.net/images/projects/sub-jepa/cube.gif" alt="Cube" width="49%" />
+    <img src="https://kaizhao.net/images/projects/sub-jepa/pusht.gif" alt="Reacher" width="49%" />
+  </p>
+</div>
+
 ## Main Result
 Sub-JEPA consistently improves over LeWM across four continuous-control environments.
 
