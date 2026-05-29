@@ -114,12 +114,50 @@ All Sub-JEPA knobs live under `loss.sigreg` in `le-wm/config/train/lewm.yaml`.
 | `loss.sigreg.kwargs.init_mode`     | Projection initialization mode.                                                        |
 | `loss.sigreg.theta`                | Soft orthogonality penalty weight. Only used by trainable projection variants.         |
 
-Example: To train the model using the default configuration described in our paper, run:
+
+## Reproducing Main Results
+To easily reproduce the main results presented in our paper across different environments, use the following commands. 
+Note the specific num_subspaces configurations tailored for each task.
+
+### Tworoom
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
   data=tworoom \
   subdir=tworoom/subjepa \
+  loss.sigreg.kwargs.init_mode=orthogonal_frozen \
+  loss.sigreg.kwargs.num_subspaces=32 \
+  trainer.max_epochs=10
+```
+
+### Reacher
+
+```bash
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+  data=dmc \
+  subdir=dmc/subjepa \
+  loss.sigreg.kwargs.init_mode=orthogonal_frozen \
+  loss.sigreg.kwargs.num_subspaces=32 \
+  trainer.max_epochs=10
+```
+
+### PushT
+
+```bash
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+  data=pusht \
+  subdir=pusht/subjepa \
+  loss.sigreg.kwargs.init_mode=orthogonal_frozen \
+  loss.sigreg.kwargs.num_subspaces=16 \
+  trainer.max_epochs=10
+```
+
+### OGB-Cube
+
+```bash
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+  data=ogb \
+  subdir=cube/subjepa \
   loss.sigreg.kwargs.init_mode=orthogonal_frozen \
   loss.sigreg.kwargs.num_subspaces=32 \
   trainer.max_epochs=10
