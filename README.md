@@ -63,12 +63,7 @@ If you forgot `--recursive`, you can run:
 git submodule update --init --recursive
 ```
 
-### 2. Apply the Sub-JEPA patch to LeWM
-```bash
-git -C le-wm apply ../lewm_subjepa.patch
-```
-
-### 3. Set up the environment + data (same as LeWM)
+### 2. Set up the environment + data (same as LeWM)
 Follow the upstream LeWM instructions:
 
 - Installation: https://github.com/lucas-maes/le-wm#using-the-code
@@ -93,18 +88,12 @@ hf download intcomp/sub-jepa
 Training is identical to LeWM and is configured with Hydra. The patch modifies `le-wm/train.py` and `le-wm/config/train/lewm.yaml` to use multi-subspace regularization.
 
 ```bash
-PYTHONPATH=. python le-wm/train.py data=tworoom
-```
-
-Make sure to set your WandB `entity` and `project` in `le-wm/config/train/lewm.yaml`, or disable WandB:
-
-```bash
-PYTHONPATH=. python le-wm/train.py data=tworoom wandb.enabled=false
+python train.py data=tworoom
 ```
 
 ### Sub-JEPA hyperparameters
 
-All Sub-JEPA knobs live under `loss.sigreg` in `le-wm/config/train/lewm.yaml`.
+All Sub-JEPA knobs live under `loss.sigreg` in `config/train/lewm.yaml`.
 
 | Hyperparameter                     | Description                                                                            |
 | ---------------------------------- | -------------------------------------------------------------------------------------- |
@@ -122,7 +111,7 @@ Note the specific num_subspaces configurations tailored for each task.
 ### Tworoom
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+CUDA_VISIBLE_DEVICES=0 python train.py \
   data=tworoom \
   subdir=tworoom/subjepa \
   loss.sigreg.kwargs.init_mode=orthogonal_frozen \
@@ -133,7 +122,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
 ### Reacher
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+CUDA_VISIBLE_DEVICES=0 python train.py \
   data=dmc \
   subdir=dmc/subjepa \
   loss.sigreg.kwargs.init_mode=orthogonal_frozen \
@@ -144,7 +133,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
 ### PushT
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+CUDA_VISIBLE_DEVICES=0 python train.py \
   data=pusht \
   subdir=pusht/subjepa \
   loss.sigreg.kwargs.init_mode=orthogonal_frozen \
@@ -155,7 +144,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
 ### OGB-Cube
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python le-wm/train.py \
+CUDA_VISIBLE_DEVICES=0 python train.py \
   data=ogb \
   subdir=cube/subjepa \
   loss.sigreg.kwargs.init_mode=orthogonal_frozen \
